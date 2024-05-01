@@ -182,7 +182,7 @@ export default {
 		}
 
 		&:nth-of-type(2) {
-			background-image: url('../assets/hero1.jpg');
+			background-image: url('/img/hero1.jpg');
 			clip-path: polygon(59% 0, 82% 0, 50% 100%, 27% 100%);
 			z-index: 40;
 
@@ -207,7 +207,7 @@ export default {
 		}
 
 		&:nth-of-type(3) {
-			background-image: url('../assets/hero2.jpg');
+			background-image: url('/img/hero2.jpg');
 			clip-path: polygon(82% 0, 105% 0, 73% 100%, 50% 100%);
 			z-index: 30;
 
@@ -238,7 +238,7 @@ export default {
 		}
 
 		&:nth-of-type(4) {
-			background-image: url('../assets/hero3.jpg');
+			background-image: url('/img/hero3.jpg');
 			clip-path: polygon(105% 0, 132% 0, 100% 100%, 73% 100%);
 			z-index: 20;
 
@@ -265,7 +265,7 @@ export default {
 		}
 
 		&::after {
-			background-image: url('../assets/hero1-shadow.png');
+			background-image: url('/img/hero-shadow.png');
 			background-position: 0 0;
 			background-repeat: no-repeat;
 			background-size: 100% 100%;

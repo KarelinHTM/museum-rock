@@ -8,7 +8,7 @@
 				class="exhibitions-gallery__item"
 				@click="centerItem(index)"
 			>
-				<img :src="`../src/assets/${block.img}`" alt="Категория экспонатов" />
+				<img :src="`./img/${block.img}`" alt="Категория экспонатов" />
 			</div>
 		</div>
 		<a href="" class="exhibitions-gallery__button">
@@ -118,7 +118,7 @@ export default {
 			this.draggableInstance = Draggable.create(this.containerDraggableClass, {
 				bounds: document.querySelector('.exhibitions-gallery'),
 				inertia: true,
-			})
+			})[0]
 		},
 		destroyDraggable() {
 			if (this.draggableInstance) {
@@ -128,13 +128,26 @@ export default {
 		centerItem(index) {
 			const container = this.$refs.draggableContainer
 			const item = container.children[index]
-			const containerWidth = container.offsetWidth * 8.2
-			const containerHeight = container.offsetHeight * 8.2
-			const itemWidth = item.offsetWidth
-			const itemHeight = item.offsetHeight
-			const offsetX = (containerWidth - itemWidth) / 2
-			const offsetY = (containerHeight - itemHeight) / 2
-			gsap.to(container, { x: offsetX, y: offsetY, duration: 0.3 })
+			const itemRect = item.getBoundingClientRect()
+			const halfWindowWidth = window.innerWidth / 2
+			const halfWindowHeight = window.innerHeight / 2
+
+			const offsetX =
+				this.draggableInstance.x -
+				(itemRect.left - halfWindowWidth) -
+				itemRect.width / 2
+			const offsetY =
+				this.draggableInstance.y -
+				(itemRect.top - halfWindowHeight) -
+				itemRect.height / 2
+
+			requestAnimationFrame(() => {
+				gsap.to(container, {
+					x: offsetX,
+					y: offsetY,
+					duration: 0.5,
+				})
+			})
 		},
 	},
 }

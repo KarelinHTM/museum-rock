@@ -8,7 +8,7 @@
 						<address class="footer__address">
 							<img
 								class="footer__contacts-icon"
-								src="../assets/svg/contacs-address.svg"
+								src="/img/svg/contacs-address.svg"
 								alt="Местоположение"
 							/>
 							Красноярск, ул. Ады Лебедевой, 93В
@@ -16,7 +16,7 @@
 						<a href="tel:+79511234567" class="footer__number">
 							<img
 								class="footer__contacts-icon"
-								src="../assets/svg/contacs-tel.svg"
+								src="/img/svg/contacs-tel.svg"
 								alt="Местоположение"
 							/>
 							<span class="footer__contacts-link"> +7 (951) 123-45-67 </span></a
@@ -24,7 +24,7 @@
 						<a href="mailto:test@test.ru" class="footer__email">
 							<img
 								class="footer__contacts-icon"
-								src="../assets/svg/contacs-mail.svg"
+								src="/img/svg/contacs-mail.svg"
 								alt="Местоположение"
 							/>
 							<span class="footer__contacts-link"> test@test.ru </span></a

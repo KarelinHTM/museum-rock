@@ -1,11 +1,13 @@
 <template>
-	<div>People</div>
+	<people-section />
 </template>
 
 <script>
+import PeopleSection from '../components/PeopleSection.vue'
+
 export default {
-	setup() {
-		return {}
+	components: {
+		PeopleSection,
 	},
 }
 </script>
