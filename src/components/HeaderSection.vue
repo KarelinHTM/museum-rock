@@ -2,13 +2,14 @@
 	<header class="header">
 		<div class="container">
 			<div class="header__inner">
-				<a href="/" class="header__logo">
+				<router-link to="/" class="header__logo">
+					Главная
 					<!-- <img
 						src="../assets/logo.png"
 						alt="Музей камня"
 						class="header__logo-image"
 					/> -->
-				</a>
+				</router-link>
 				<my-navigation />
 			</div>
 		</div>
