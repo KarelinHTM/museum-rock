@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import ExhibitionsCatalog from '../components/ExhibitionsCatalog.vue'
 import Afisha from '../pages/Afisha.vue'
 import Exhibitions from '../pages/Exhibitions.vue'
 import Home from '../pages/Home.vue'
@@ -14,6 +15,10 @@ const routes = [
 	{
 		path: '/exhibitions',
 		component: Exhibitions,
+	},
+	{
+		path: '/exhibitions/catalog',
+		component: ExhibitionsCatalog,
 	},
 	{
 		path: '/people',

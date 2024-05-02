@@ -34,4 +34,13 @@ export default {
 		background-position: -400% 50%;
 	}
 }
+
+@keyframes cardOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
 </style>
