@@ -19,7 +19,7 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 import { ref } from 'vue'
 import ProgramItem from '../components/ProgramItem.vue'
 import ModalForm from '../components/UI/ModalForm.vue'
-import { db } from '../firebase.js'
+import { db } from '../firebase'
 
 export default {
 	components: {

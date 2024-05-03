@@ -1,14 +1,56 @@
 <template>
 	<section ref="draggableSection" class="exhibitions-gallery">
-		<h1 class="exhibitions-gallery__title">Музей камня</h1>
-		<div ref="draggableContainer" class="exhibitions-gallery__list">
+		<h1 class="exhibitions-gallery__title">
+			Музей камня
+			<span
+				class="exhibitions-gallery__loading"
+				:class="{ loading: isLoading }"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 100 100"
+					preserveAspectRatio="xMidYMid"
+					width="100"
+					height="100"
+					style="shape-rendering: auto; display: block; background: transparent"
+					xmlns:xlink="http://www.w3.org/1999/xlink"
+				>
+					<g>
+						<circle
+							stroke-dasharray="183.7831702350029 63.261056745000964"
+							r="39"
+							stroke-width="14"
+							stroke="#4f4c93"
+							fill="none"
+							cy="50"
+							cx="50"
+						>
+							<animateTransform
+								keyTimes="0;1"
+								values="0 50 50;360 50 50"
+								dur="1s"
+								repeatCount="indefinite"
+								type="rotate"
+								attributeName="transform"
+							></animateTransform>
+						</circle>
+						<g></g>
+					</g>
+				</svg>
+			</span>
+		</h1>
+		<div
+			ref="draggableContainer"
+			class="exhibitions-gallery__list"
+			:class="{ loading: isLoading }"
+		>
 			<div
 				v-for="(block, index) in multipliedItems"
 				:key="index"
 				class="exhibitions-gallery__item"
 				@click="centerItem(index)"
 			>
-				<img :src="`./img/${block.img}`" alt="Категория экспонатов" />
+				<img :src="`${block.image}`" alt="Категория экспонатов" />
 				<div class="exhibitions-gallery__item-mask">
 					<img
 						src="/img/svg/exhibitions-close.svg"
@@ -16,13 +58,12 @@
 						class="exhibitions-gallery__item-close"
 					/>
 					<div class="exhibitions-gallery__item-text">
-						<h3 class="exhibitions-gallery__item-title">Керамика</h3>
+						<h3 class="exhibitions-gallery__item-title">{{ block.title }}</h3>
 						<p class="exhibitions-gallery__item-description">
-							Художественная и интерьерная керамика от талантливых красноярских
-							керамистов для дома и в подарок.
+							{{ block.description }}
 						</p>
 						<router-link
-							to="/exhibitions/catalog"
+							:to="`/exhibitions/categories/${block.id}`"
 							class="exhibitions-gallery__item-button"
 						>
 							<span>Подробнее</span>
@@ -31,9 +72,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="exhibitions-gallery__button">
+		<div class="exhibitions-gallery__button" :class="{ loading: isLoading }">
 			<router-link
-				to="/exhibitions/catalog"
+				v-if="exhibitions[0]"
+				:to="`/exhibitions/categories/${exhibitions[0].id}`"
 				class="exhibitions-gallery__button-item"
 			>
 				<span>Все экспонаты</span>
@@ -43,82 +85,26 @@
 </template>
 
 <script>
+import { collection, getDocs, query } from 'firebase/firestore'
 import gsap from 'gsap'
 import { Draggable } from 'gsap/Draggable'
+import { db } from '../firebase'
 
 export default {
 	data() {
 		return {
 			containerDraggableClass: '.exhibitions-gallery__list',
 			draggableInstance: null,
-			timesToRepeat: 4,
-			blocks: [
-				{
-					img: '1.jpg',
-				},
-				{
-					img: '2.jpg',
-				},
-				{
-					img: '3.jpg',
-				},
-				{
-					img: '4.jpg',
-				},
-				{
-					img: '5.jpg',
-				},
-				{
-					img: '6.jpg',
-				},
-				{
-					img: '7.jpg',
-				},
-				{
-					img: '8.jpg',
-				},
-				{
-					img: '9.jpg',
-				},
-				{
-					img: '10.jpg',
-				},
-				{
-					img: '11.jpg',
-				},
-				{
-					img: '12.jpg',
-				},
-				{
-					img: '13.jpg',
-				},
-				{
-					img: '14.jpg',
-				},
-				{
-					img: '15.jpg',
-				},
-				{
-					img: '16.jpg',
-				},
-				{
-					img: '17.jpg',
-				},
-				{
-					img: '18.jpg',
-				},
-				{
-					img: '19.jpg',
-				},
-				{
-					img: '20.jpg',
-				},
-			],
+			timesToRepeat: 16,
+			isLoading: true,
+			exhibitions: [],
 			itemActiveElement: '',
 		}
 	},
 
-	mounted() {
+	created() {
+		this.fetchExhibitions()
+
 		this.$nextTick(() => {
 			gsap.registerPlugin(Draggable)
 			this.createDraggable()
@@ -133,13 +119,24 @@ export default {
 		multipliedItems() {
 			let result = []
 			for (let i = 0; i < this.timesToRepeat; i++) {
-				result = result.concat(this.blocks)
+				result = result.concat(this.exhibitions)
 			}
+
 			return result
 		},
 	},
 
 	methods: {
+		async fetchExhibitions() {
+			const q = query(collection(db, 'exhibitions'))
+			const querySnap = await getDocs(q)
+			querySnap.forEach(doc => {
+				this.exhibitions.push(doc.data())
+			})
+			setTimeout(() => {
+				this.isLoading = false
+			}, 800)
+		},
 		createDraggable() {
 			this.draggableInstance = Draggable.create(this.containerDraggableClass, {
 				bounds: document.querySelector('.exhibitions-gallery'),
@@ -161,8 +158,8 @@ export default {
 				const halfWindowWidth = window.innerWidth / 2
 				const halfWindowHeight = window.innerHeight / 2
 
-				item.classList.toggle('exhibitions-gallery__item-active')
-				section.classList.toggle('exhibitions-gallery-active')
+				item.classList.add('exhibitions-gallery__item-active')
+				section.classList.add('exhibitions-gallery-active')
 
 				const offsetX =
 					this.draggableInstance.x -
@@ -182,12 +179,15 @@ export default {
 				})
 
 				this.draggableInstance.enabled(false)
-			} else {
+			} else if (
+				this.$refs.draggableContainer !== null &&
+				this.$refs.draggableContainer !== undefined
+			) {
 				const section = this.$refs.draggableSection
 				const container = this.$refs.draggableContainer
 				const item = container.children[index]
-				item.classList.toggle('exhibitions-gallery__item-active')
-				section.classList.toggle('exhibitions-gallery-active')
+				item.classList.remove('exhibitions-gallery__item-active')
+				section.classList.remove('exhibitions-gallery-active')
 				this.draggableInstance.enabled(true)
 				this.itemActiveElement = ''
 			}
@@ -207,10 +207,28 @@ export default {
 	&__title {
 		text-transform: uppercase;
 		font-size: 100px;
+		line-height: 1;
 		font-weight: bold;
 		position: absolute;
 		text-align: center;
 		font-family: var(--font-family);
+	}
+
+	&__loading {
+		font-size: 60px;
+		font-weight: 400;
+		text-transform: none;
+		opacity: 0;
+		transition: opacity 1s;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		margin-top: 20px;
+
+		&.loading {
+			opacity: 1;
+		}
 	}
 
 	&__list {
@@ -222,6 +240,10 @@ export default {
 		transition: transform 1s cubic-bezier(0.075, 1, 0.25, 1), opacity 1s;
 		position: relative;
 		z-index: 1100 !important;
+
+		&.loading {
+			opacity: 0;
+		}
 	}
 
 	&__item {
@@ -276,7 +298,6 @@ export default {
 
 			.exhibitions-gallery__item-text {
 				color: var(--white-color);
-				pointer-events: all;
 				font-size: 2px;
 				position: absolute;
 				left: 0;
@@ -317,6 +338,7 @@ export default {
 					);
 					background-size: 400% 400%;
 					margin: 2px 0 1px;
+					pointer-events: all;
 				}
 
 				&:hover {
@@ -357,6 +379,12 @@ export default {
 		box-shadow: 0 0 10px 0 var(--dark-color);
 		transition: all 0.4s ease-in-out;
 		pointer-events: all;
+		opacity: 1;
+		transition: opacity 1s;
+
+		&.loading {
+			opacity: 0;
+		}
 
 		&-item {
 			display: block;

@@ -64,9 +64,6 @@
 									</svg>
 								</a>
 							</li>
-							<li class="footer__social-item">
-								<a href="" class="footer__social-link"></a>
-							</li>
 						</ul>
 					</div>
 				</div>

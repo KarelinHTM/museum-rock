@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
-import { getStorage, ref } from 'firebase/storage'
+import { getStorage } from 'firebase/storage'
 
 // Ваши конфигурационные данные Firebase
 const firebaseConfig = {
