@@ -6,13 +6,13 @@
 					<ul class="list-reset exhibitions-nav__list">
 						<li
 							class="exhibitions-nav__item"
-							v-for="(block, index) in blocks"
+							v-for="(block, index) in exhibitions"
 							:key="block.id"
 						>
-							<router-link
+							<RouterLink
 								:to="`/exhibitions/categories/${block.id}`"
 								class="exhibitions-nav__link"
-								>{{ block.title }}</router-link
+								>{{ block.title }}</RouterLink
 							>
 						</li>
 					</ul>
@@ -24,49 +24,29 @@
 </template>
 
 <script>
-import { RouterView } from 'vue-router'
+import { RouterLink, RouterView } from 'vue-router'
+import { mapActions, mapState } from 'vuex'
 
 export default {
 	data() {
-		return {
-			blocks: [
-				{
-					id: 1,
-					img: '1.jpg',
-					title: 'Керамика',
-					description:
-						'Художественная и интерьерная керамика от талантливых красноярских керамистов для дома и в подарок.',
-				},
-				{
-					id: 2,
-					img: '2.jpg',
-					title: 'Керамика',
-					description:
-						'Художественная и интерьерная керамика от талантливых красноярских керамистов для дома и в подарок.',
-				},
-				{
-					id: 3,
-					img: '3.jpg',
-					title: 'Керамика',
-					description:
-						'Художественная и интерьерная керамика от талантливых красноярских керамистов для дома и в подарок.',
-				},
-				{
-					id: 4,
-					img: '4.jpg',
-					title: 'Керамика',
-					description:
-						'Художественная и интерьерная керамика от талантливых красноярских керамистов для дома и в подарок.',
-				},
-				{
-					id: 5,
-					img: '5.jpg',
-					title: 'Керамика',
-					description:
-						'Художественная и интерьерная керамика от талантливых красноярских керамистов для дома и в подарок.',
-				},
-			],
-		}
+		return {}
+	},
+
+	mounted() {
+		this.fetchExhibitions()
+	},
+
+	methods: {
+		...mapActions({
+			fetchExhibitions: 'exhibitions/fetchExhibitions',
+		}),
+	},
+
+	computed: {
+		...mapState({
+			isLoading: state => state.exhibitions.isLoading,
+			exhibitions: state => state.exhibitions.exhibitions,
+		}),
 	},
 }
 </script>
@@ -75,6 +55,10 @@ export default {
 .exhibitions {
 	margin-top: 120px;
 	&__inner {
+		&-loading {
+			display: flex;
+			justify-content: center;
+		}
 	}
 }
 

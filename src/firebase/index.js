@@ -3,7 +3,7 @@ import { getFirestore } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
 
 // Ваши конфигурационные данные Firebase
-const firebaseConfig = {
+export const firebaseApp = initializeApp({
 	apiKey: 'AIzaSyDGVRmA--pBDYTOjw1YbGuaxsgZmgn-U2A',
 	authDomain: 'museum-rock.firebaseapp.com',
 	projectId: 'museum-rock',
@@ -11,13 +11,9 @@ const firebaseConfig = {
 	messagingSenderId: '739406576155',
 	appId: '1:739406576155:web:c2c1ad49e8149dce4956be',
 	measurementId: 'G-MZQWMX2D5K',
-}
+})
 
-// Инициализируйте Firebase
-const app = initializeApp(firebaseConfig)
-
-// Получите экземпляр Firestore
-const db = getFirestore(app)
+const db = getFirestore(firebaseApp)
 const storage = getStorage()
 
 export { db }

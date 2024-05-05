@@ -2,7 +2,12 @@
 	<nav class="nav">
 		<ul class="list-reset nav__list">
 			<li class="nav__item">
-				<router-link to="/exhibitions" class="nav__link"
+				<router-link
+					to="/exhibitions"
+					class="nav__link nav__link-exhibitions"
+					:class="{
+						'router-link-active': this.$route.path.startsWith('/exhibitions'),
+					}"
 					><span class="nav__link-text">Экспонаты</span></router-link
 				>
 			</li>
